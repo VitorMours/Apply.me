@@ -7,7 +7,10 @@ router = APIRouter(tags=["users"])
 async def get_all_users():
     pass
 
-@router.get("/{id}")
-async def get_user_by_id(id: UUID):
+@router.get("/me")
+async def get_user_by_id():
+    """Pegar o usuário com base no seu ID, dado presente dentro do JWT"""
     pass
+
+
 

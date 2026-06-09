@@ -1,8 +1,9 @@
 from pydantic import Field 
-from beanie import Document
+from beanie import Document, Indexed
 from datetime import datetime
 
 class User(Document):
+    
     email: str
     password: str
     role: str

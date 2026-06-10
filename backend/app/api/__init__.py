@@ -1,7 +1,7 @@
 from fastapi import APIRouter
-import v1
+from .v1 import v1
 
 api = APIRouter()
 
 
-api.include_router(v1, prefix="v1")
+api.include_router(v1, prefix="/v1")

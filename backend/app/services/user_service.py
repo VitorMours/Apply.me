@@ -22,7 +22,12 @@ class UserService:
         return new_user
     
     async def update_user(self, user: User, user_data: UserUpdate) -> User:
-        pass
+        try:
+            user = await self.fetch_user_by_email(email=user.email)
+            print(user)
+            
+        except Exception as e:
+            print(e)
     
     async def fetch_users(self) -> List[User]:
         users = await User.find_all().to_list()

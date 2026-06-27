@@ -1,5 +1,5 @@
 from beanie import PydanticObjectId
-from pydantic import BaseModel, ConfigDict, EmailStr
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 from datetime import datetime 
 from typing import Optional 
 
@@ -12,7 +12,7 @@ class UserCreate(BaseUser):
     password: str
 
 class UserRead(BaseUser):
-    id: PydanticObjectId
+    id: str = Field(alias="_id")
     created_at: datetime
     updated_at: datetime
     

@@ -42,7 +42,8 @@ async def create_user(user: UserCreate, auth_service: AuthService = Depends(get_
 @router.patch("/{id}", response_model=UserRead, status_code=status.HTTP_200_OK)
 async def update_user(user: UserUpdate, user_service: UserService = Depends(get_user_service)):
     try:
-        # TODO: Deve procurar os dados, e a partir da procura dos dados , verioficar se o usu[arios existe]
+        #user_service.
+        pass
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

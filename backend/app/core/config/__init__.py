@@ -5,6 +5,7 @@ class Settings(BaseSettings):
     APP_NAME: str = 'Apply backend'
     MONGODB_URL: str
     DB_NAME: str = "TodoCluster"
+    IS_LOCAL: bool = True
     model_config = SettingsConfigDict(env_file=".env")
 
 

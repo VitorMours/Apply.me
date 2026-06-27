@@ -24,6 +24,6 @@ class UserRead(BaseUser):
     )    
     
 class UserUpdate(BaseUser):
-    username: Optional[str] = None
+    name: Optional[str] = None
     role: Optional[str] = None
     email: Optional[EmailStr] = None

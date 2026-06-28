@@ -67,18 +67,52 @@ class TestUserSchemas:
         assert "updated_at" in fields, "O schema de leitura de usuario esta faltando o timestamp de atualizacao"
         
         
+    def test_if_can_validate_base_user_data(self) -> None:
+        module = importlib.import_module("app.schemas.user_schemas")
+        class_ = module.BaseUser
         
+        valid_user = class_(
+            name = "Vitor Moura",
+            email = "jvrezendemoura@gmail.com",
+            role = "Student"
+        )
+        assert valid_user.name == "Vitor Moura", "O nome do usuario nao esta sendo validado corretamente" 
+        assert valid_user.email == "jvrezendemoura@gmail.com", "O email do usuario nao esta sendo validado corretamente "
+        assert valid_user.role == "Student", "O cargo do usuario nao esta sendo validado corretamente"
         
+    def test_if_user_base_schema_validation_raise_errors_with_empty_class(self) -> None:
+        module = importlib.import_module("app.schemas.user_schemas")
+        class_ = module.BaseUser
         
+        with pytest.raises(pydantic.ValidationError):
+            invalid_user = class_()
+            
+    def test_if_user_base_schema_validation_raise_erros_with_numerical_name(self) -> None:
+        module = importlib.import_module("app.schemas.user_schemas")
+        class_ = module.BaseUser 
         
+        with pytest.raises(pydantic.ValidationError):
+            invalid_user = class_(
+                name=123,
+                email="jvrezendemoura@gmail.com",
+                role="Student"
+            )    
+    
+    def test_if_user_base_schema_validation_raise_erros_with_numerical_email(self) -> None:
+        module = importlib.import_module("app.schemas.user_schemas")
+        class_ = module.BaseUser
         
+        with pytest.raises(pydantic.ValidationError):
+            invalid_user = class_(name="Lucas", email=123, role="Student")
+            
+    def test_if_user_base_schema_validation_raises_errors_with_numerical_role(self) -> None:
+        module = importlib.import_module("app.schemas.user_schemas")
+        class_ = module.BaseUser
         
-        
-        
-        
-        
-        
-        
-    def test_to_schema_user_in_the_create_user_schema_model(self) -> None:
-        pass
-        
+        with pytest.raises(pydantic.ValidationError):
+            invalid_user = class_(name="Vitor Lucas", email="jvrezendemoura@gmail.com", role=123)
+            
+   
+    def test_if_user_create_schema_validation_raises_errors_with_empty_field(self) -> None:
+        pass        
+    

@@ -112,7 +112,65 @@ class TestUserSchemas:
         with pytest.raises(pydantic.ValidationError):
             invalid_user = class_(name="Vitor Lucas", email="jvrezendemoura@gmail.com", role=123)
             
-   
-    def test_if_user_create_schema_validation_raises_errors_with_empty_field(self) -> None:
-        pass        
+    def test_if_user_create_schema_validate_user_data(self) -> None:
+        module = importlib.import_module("app.schemas.user_schemas")
+        class_ = module.UserCreate
+        user_instance = class_(
+            name="Joao Vitor", 
+            email="jvrezendemoura@gmail.com",
+            password="123asd",
+            role="Student",
+        )
+        assert user_instance.name == "Joao Vitor", "O campo de nome nao foi corretamente validado"
+        assert user_instance.email == "jvrezendemoura@gmail.com", "O campo de email nao foi corretamente validado"
+        assert user_instance.password == "123asd", "O campo de senha nao foi corretamente validado"
+        assert user_instance.role == "Student", "O campo de cargo nao foi corretamente validado"
     
+    def test_user_create_schema_validation_raises_error_with_numerical_password(self) -> None:
+        module = importlib.import_module("app.schemas.user_schemas")
+        class_ = module.UserCreate 
+        
+        with pytest.raises(pydantic.ValidationError):
+            user_instance = class_(
+                name = "Vitor",
+                email = "vitor.moura@gmail.com",
+                role = "Student",
+                password = 123,
+            )
+        
+    def test_user_create_schema_validation_raises_error_with_empty_password(self) -> None:
+        module = importlib.import_module("app.schemas.user_schemas")
+        class_ = module.UserCreate 
+        
+        with pytest.raises(pydantic.ValidationError):
+            user_instancer = class_(
+                name = "Vitor Lucas",
+                email = "vitor.lucas@gmail.com",
+                role = "Student",
+            )
+            
+    def test_user_update_schema_validate_data(self) -> None:
+        module = importlib.import_module("app.schemas.user_schemas")
+        class_ = module.UserUpdate
+        
+        user_instance = class_(
+            name="Vitor Mario",
+            email="vitor.mario@gmail.com",
+            role="Teatcher"
+        )
+        
+        assert user_instance.name == "Vitor Mario", "A validacao do nome foi feita incorretamente"
+        assert user_instance.email == "vitor.mario@gmail.com", "A validacao do email foi feita incorretamente"
+        assert user_instance.role == "Teatcher", "A validacao do cargo foi feita incorretamente"
+        
+    def test_if_user_update_schema_accepts_empty_values_except_the_email(self) -> None:
+        module = importlib.import_module("app.schemas.user_schemas")
+        class_ = module.UserUpdate
+        
+        user_instance = class_(
+            name="",
+            email="email@email.com",
+            role=""
+        )
+            
+        

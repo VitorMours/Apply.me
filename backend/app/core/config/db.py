@@ -5,8 +5,7 @@ from app.models.user_model import User
 from app.core.config import settings
 
 async def connect_db():
-    is_local = "localhost" in settings.MONGODB_URL or "127.0.0.1" in settings.MONGODB_URL
-
+    is_local = settings.IS_LOCAL
     client_kwargs = {}
     if not is_local:
         client_kwargs = {

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { NavBar } from "@/app/_components/ui/NavBar";
+import { Toaster } from "sonner";
 
 // Configuração das fontes Geist
 const geistSans = Geist({
@@ -40,6 +41,7 @@ export default function RootLayout({
       */}
       <body className="min-h-full flex flex-col font-sans">
         {children}
+        <Toaster/>
       </body>        
     </html>
   );

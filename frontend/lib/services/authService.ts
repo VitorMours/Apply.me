@@ -1,3 +1,4 @@
+import { ApiError } from "../errors";
 import { apiFetch } from "./api";
 
 export interface CreateUserDTO {
@@ -16,15 +17,14 @@ export interface LoginUserDTO {
 class AuthService {
     async signin(data: CreateUserDTO) { // TODO: Adicionar o retorno
         return apiFetch("v1/auth/signin",
-        {
-            body: JSON.stringify(data),
-            method: "POST"
-        });
+            {
+                body: JSON.stringify(data),
+                method: "POST"
+            });
     }
-    
-    async login(data: LoginUserDTO) { // TODO: Adicionar o retorno
-        return apiFetch("v1/auth/login",
-        {
+
+    async login(data: LoginUserDTO): Promise<void> { // TODO: Adicionar o retorno
+        const response = await apiFetch("v1/auth/login", {
             body: JSON.stringify(data),
             method: "POST"
         });

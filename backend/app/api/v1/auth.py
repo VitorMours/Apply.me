@@ -1,8 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from app.services.security_service import AuthService
 from app.schemas.auth_schemas import LoginCredentials, ReceiveToken
 from app.services.user_service import UserService 
+import logging 
 
+logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["auth"])
 
@@ -14,12 +16,12 @@ def get_auth_service():
 
 @router.post("/login", response_model=ReceiveToken)
 async def login(
+    response: Response,
     data: LoginCredentials, 
     user_service: UserService = Depends(get_user_service), 
     auth_service: AuthService = Depends(get_auth_service)
 ):
     searched_user = await user_service.fetch_user_by_email(data.email)
-    
     if not searched_user or not auth_service.verify_password(data.password, searched_user.password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -30,11 +32,16 @@ async def login(
         data={"email": data.email, "id": str(searched_user.id)}
     )
     
-    return {
-        "access_token": access_token, 
-        "token_type": "bearer", 
-        "user_id": str(searched_user.id)
-    }
+    response.set_cookie(
+        key="access_token",
+        httponly=True,
+        value=access_token,
+        max_age=3600, 
+        secure=False,
+        samesite="lax",
+    )
+    
+    return {"user_id": str(searched_user.id)}
 
 @router.post("/signin")
 async def signin():

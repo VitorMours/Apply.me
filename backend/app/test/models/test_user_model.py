@@ -1,5 +1,6 @@
 import pytest
 import pytest_asyncio
+from beanie.exceptions import RevisionIdWasChanged
 from datetime import datetime, timezone
 from beanie import Document
 
@@ -108,10 +109,46 @@ class TestUserModel:
             User(email="joao@email.com")
 
     @pytest.mark.asyncio
-    async def test_if_two_users_with_same_data_are_equal_in_fields(self, mock_db) -> None:
+    async def test_if_two_users_with_same_data_are_equal_in_fields_without_saving_data(self, mock_db) -> None:
         from app.models.user_model import User
         user1 = User(name="Ana", email="ana@email.com", password="123", role="user")
         user2 = User(name="Ana", email="ana@email.com", password="123", role="user")
         assert user1.name == user2.name
         assert user1.email == user2.email
         assert user1.role == user2.role
+        
+        
+class TestUserModelErrors:
+    @pytest.mark.asyncio
+    async def test_if_raise_errors_when_try_to_save_user_with_email_already_used(self, mock_db) -> None:
+        from app.models.user_model import User
+        user1 = User(name="Ana", email="ana.damasio@gmail.com", role="user", password="123asd")
+        user2 = User(name="Ana", email="ana.damasio@gmail.com", role="user", password="123asd")
+        await user1.save()
+        
+        with pytest.raises(RevisionIdWasChanged):
+            await user2.save()
+            
+    @pytest.mark.asyncio
+    async def test_if_not_raises_errors_with_duplicate_data_except_email_in_use(self, mock_db) -> None:
+        from app.models.user_model import User
+        user1 = User(name="Ana", email="ana.damasio@gmail.com", role="user", password="123asd")
+        user2 = User(name="Ana", email="ana.demaise@gmail.com", role="user", password="123asd")
+        await user1.save()
+        await user2.save() 
+        
+        assert user2.name == user1.name
+        assert user2.role == user1.role
+        assert user2.password == user1.password
+        assert user2.email != user1.email
+        
+    @pytest.mark.asyncio 
+    async def test_if_can_create_user_with_email_already_registered_and_deleted(self, mock_db) -> None:
+        from app.models.user_model import User 
+        user1 = User(name="Ana", email="ana.damasio@gmail.com", role="user", password="123asd")
+        user2 = User(name="Damasio", email="ana.damasio@gmail.com", role="admin", password="123123123asdasdasd")
+        await user1.save()
+        await user1.delete()
+        await user2.save()
+        
+        assert user2.email == "ana.damasio@gmail.com"       

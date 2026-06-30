@@ -172,5 +172,8 @@ class TestUserSchemas:
             email="email@email.com",
             role=""
         )
+        assert user_instance.name == ""
+        assert user_instance.role == ""
+        assert user_instance.email == "email@email.com"
             
         

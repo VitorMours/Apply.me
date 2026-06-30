@@ -47,7 +47,6 @@ export default function AuthLoginPage() {
       } else {
         toast.error("Erro durante o login", { position: "bottom-right", description: "Erro desconhecido" });
       }
-
       console.trace(`Error: ${error}`)
     } finally {
       setLoading(false);

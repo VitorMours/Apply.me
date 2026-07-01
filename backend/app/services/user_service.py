@@ -1,9 +1,13 @@
 from typing import List
-from app.models.user_model import User 
+from app.models.user_model import User
 from app.schemas.user_schemas import UserCreate, UserUpdate, UserRead
+from app.services.security_service import AuthService
 
 
 class UserService:
+    def __init__(self) -> None:
+        self.auth_service = AuthService()
+
     async def create_user(self, user_data: UserCreate) -> User:
         existing_user = await User.find_one(
             User.email == user_data.email
@@ -11,11 +15,13 @@ class UserService:
         if existing_user:
             raise ValueError("Email já cadastrado")
 
+        hashed_password = await self.auth_service.hash_password(user_data.password)
+
         new_user = User(
             name=user_data.name,
             email=user_data.email,
             role=user_data.role,
-            password=user_data.password
+            password=hashed_password
         )
 
         await new_user.insert()

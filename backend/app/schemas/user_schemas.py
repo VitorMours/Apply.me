@@ -27,3 +27,8 @@ class UserUpdate(BaseUser):
     name: Optional[str] = None
     role: Optional[str] = None
     email: Optional[EmailStr] = None
+
+class UserResponse(BaseUser):
+    created_at: datetime
+    updated_at: datetime
+

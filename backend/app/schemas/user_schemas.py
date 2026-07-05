@@ -28,5 +28,7 @@ class UserUpdate(BaseUser):
     role: Optional[str] = None
     email: Optional[EmailStr] = None
 
+class UserResponse(BaseUser):
+    created_at: datetime
+    updated_at: datetime
 
-# TODO: Adicionar user response

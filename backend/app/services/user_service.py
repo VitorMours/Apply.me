@@ -1,7 +1,8 @@
 from typing import List
-from app.models.user_model import User 
+from app.models.user_model import User
 from app.schemas.user_schemas import UserCreate, UserUpdate, UserRead
 from app.services.security_service import AuthService
+
 
 class UserService:
     async def create_user(self, user_data: UserCreate, auth_service: AuthService) -> User:
@@ -10,12 +11,13 @@ class UserService:
         )
         if existing_user:
             raise ValueError("Email já cadastrado")
-        
+
         hashed_password = await auth_service.hash_password(user_data.password)
+
         new_user = User(
             name=user_data.name,
             email=user_data.email,
-            role= None,
+            role=user_data.role,
             password=hashed_password
         )
 

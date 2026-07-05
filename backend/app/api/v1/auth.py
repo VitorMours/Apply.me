@@ -1,3 +1,4 @@
+from app.schemas.user_schemas import UserResponse
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 from app.services.security_service import AuthService
 from app.schemas.auth_schemas import LoginCredentials, ReceiveToken, SigninCredentials
@@ -49,7 +50,7 @@ async def login(
     return {"user_id": str(searched_user.id)}
 
 
-@router.post("/signin")
+@router.post("/signin", response_model = UserResponse)
 async def signin(
     response: Response,
     data: SigninCredentials,

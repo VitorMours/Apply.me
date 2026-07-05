@@ -13,6 +13,7 @@ class LoginCredentials(Credentials):
 
 class SigninCredentials(Credentials):
     name: str 
+    role: str | None = Field(default="student")
     
     
 class ReceiveToken(BaseModel):

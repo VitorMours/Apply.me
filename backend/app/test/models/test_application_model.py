@@ -2,7 +2,8 @@ import pytest
 import importlib 
 import inspect 
 from beanie import Document, Link
-from app.models.user_model import User 
+from app.models.user_model import User
+from app.models.application_model import Application 
 from datetime import datetime 
 
 class TestApplicationModel:
@@ -64,7 +65,43 @@ class TestApplicationModel:
         field = module.Application.model_fields.get("updated_at")
         assert field is not None    
         
-    def test_if_can_create_application_instance(self) -> None:
+    def test_if_can_create_application_instance(self, mock_user) -> None:
+        module = importlib.import_module("app.models.application_model")
+        class_ = module.Application 
+        instance = class_(
+            name="AI Engineer",
+            company="Palantir",
+            level="Entry Level",
+            position="Jr",
+            salary=30000.00,
+            candidate=mock_user,
+        ) 
+        assert isinstance(instance, Application)
+        
+    def test_if_can_get_user_data_by_application(self, mock_user) -> None:
+        module = importlib.import_module("app.models.application_model")
+        class_ = module.Application
+        instance = class_(
+            name="AI Engineer",
+            company="Palantir",
+            level="Entry Level",
+            position="Jr",
+            salary=30000.00,
+            candidate=mock_user,
+        ) 
+        assert mock_user.id == instance.candidate.id
+        assert mock_user == instance.candidate
+        
+    def test_if_application_model_instance_have_correct_datatypes(self) -> None:
         pass 
     
-        
+    
+class TestApplicationModelExceptions:
+    def test_if_can_import_application_model(self) -> None:
+        try:
+            from app.models.application_model import Application 
+            assert Application is not None 
+            assert issubclass(Application, Document)
+            assert inspect.isclass(Application)
+        except ImportError:
+            raise ImportError("Was not possible to import application model to test exceptions ")

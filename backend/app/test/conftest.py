@@ -8,11 +8,8 @@ from app.models.application_model import Application  # Importe o modelo aqui
 async def mock_db():
     client = AsyncMongoMockClient()
     db = client["test_db"]
-    # Adicione Application à lista de document_models
     await init_beanie(database=db, document_models=[User, Application])
     yield db
-    # Não é necessário client.close() explícito com mongomock_motor, 
-    # mas não causa problemas manter.
 
 @pytest_asyncio.fixture(scope="function")
 async def mock_user(mock_db):

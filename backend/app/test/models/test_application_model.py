@@ -105,3 +105,78 @@ class TestApplicationModelExceptions:
             assert inspect.isclass(Application)
         except ImportError:
             raise ImportError("Was not possible to import application model to test exceptions ")
+        
+    def test_if_raises_error_with_empty_values(self) -> None:
+        module = importlib.import_module("app.models.application_model")
+        class_ = module.Application 
+
+        with pytest.raises(ValueError):
+            instance = class_(
+                email = "vitor.moura@gmail.com",
+                password  = "32322916aA!",
+                role  = "Student"
+            )
+            
+        with pytest.raises(ValueError):
+            instance = class_(
+                name = "Vitor Moura",
+                password  = "32322916aA!",
+                role  = "Student"
+            )
+            
+        with pytest.raises(ValueError):
+            instance = class_(
+                email = "vitor.moura@gmail.com",
+                name  = "Vitor Moura",
+                role  = "Student"
+            )
+            
+        with pytest.raises(ValueError):
+            instance = class_(
+                email = "vitor.moura@gmail.com",
+                name  = "Vitor Moura",
+                password  = "32322916aA!"
+            )
+            
+    def test_if_raises_error_with_incorrect_data_type(self) -> None:
+        module = importlib.import_module("app.models.application_model")
+        class_ = module.Application 
+        
+        with pytest.raises(ValueError):
+            instance = class_(
+                name = 123,
+                email = "email@email.com",
+                password = "123password",
+                role = "Student"
+            ) 
+        with pytest.raises(ValueError):
+            instance = class_(
+                name = "Vitor Moura",
+                email = "Vitor Moura",
+                password = "123password",
+                role = "Student"
+            )
+        with pytest.raises(ValueError):
+            instance = class_(
+                name = "Vitor MOura",
+                email = 123,
+                password = "123password",
+                role = "Student"
+            ) 
+        with pytest.raises(ValueError):
+            instance = class_(
+                name = "Vitor MOura",
+                email = "vitor.moura@gmail.com",
+                password = 123,
+                role = "Student"
+            ) 
+        with pytest.raises(ValueError):
+            instance = class_(
+                name = "Vitor MOura",
+                email = "vitormoura@gmail.com",
+                password = "123password",
+                role = 123
+            ) 
+        
+                
+        

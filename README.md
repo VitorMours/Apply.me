@@ -7,3 +7,10 @@
     />
   </a>
 </p>
+
+O Applyme é um sistema de gerenciamento de aplicação para vagas de emprego, de forma a possibilitar que os aplicantes tenham mais facilidade, praticidade, e velocidade de aplicar para as vagas que desejam.
+
+
+## Estrutura do Projeto
+
+## Rodando o Código

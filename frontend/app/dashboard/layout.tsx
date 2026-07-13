@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 import { NavBar } from "@/app/_components/ui/NavBar";
 import Drawer from "../_components/ui/Drawer";
 
-// Configuração das fontes Geist
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -34,10 +33,6 @@ export default function RootLayout({
         geistMono.variable
       )}
     >
-      { /*
-        Definimos 'font-sans' no body para que a Geist Sans seja a fonte padrão do projeto.
-        Se precisar usar a Geist Mono em algum lugar, basta usar a classe 'font-mono'.
-      */}
       <body className="min-h-full flex flex-col font-sans">
         {children}
       </body>        

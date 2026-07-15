@@ -38,10 +38,10 @@ export default function AuthSignupPage() {
                 <Input className="rounded-md" id="password" type="password" placeholder="Digite sua senha" />
               </div>
               <Button className="w-full rounded-md">Entrar</Button>
-            </form>
+            </form>   
           </CardContent>
         </Card>
-      </main>
+       </main>
     </>
   );
 }

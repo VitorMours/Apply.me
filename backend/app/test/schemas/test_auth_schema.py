@@ -1,5 +1,5 @@
 import importlib
-
+import inspect
 import pydantic
 import pytest
 from pydantic import BaseModel
@@ -98,3 +98,37 @@ class TestAuthSchemas:
 
         with pytest.raises(pydantic.ValidationError):
             module.ReceiveToken(access_token=123, token_type="bearer", user_id="42")
+            
+            
+class TestTokenSchema:
+    def test_if_can_run(self) -> None:
+        assert True 
+        
+    def test_if_can_import_token_schema(self) -> None:
+        try:
+            from app.schemas.auth_schemas import ReceiveToken
+            assert ReceiveToken is not None 
+            assert issubclass(ReceiveToken, BaseModel)
+            assert inspect.isclass(ReceiveToken)
+        except ImportError:
+            pytest.fail("A entidade receive token não é uma classe de schema do pydantic")
+        
+    def test_if_receive_token_schema_have_correct_fields(self) -> None:
+        module = importlib.import_module("app.schemas.auth_schemas")
+        class_ = module.ReceiveToken
+        fields = class_.model_fields 
+        assert "access_token" in fields, "o campo de access_token não esta presente dentro das credenciais"
+        assert "token_type" in fields, "O campo de token_type não está presente dentro das credentials"
+        assert "user_id" in fields, "O campo de user_id não está presente dentro das credenciais "
+        
+        
+    def test_if_receive_token_serialize_correct_data(self) -> None:
+        pass 
+    
+    def test_if_receive_token_raise_error_with_incorrect_data_type(self) -> None:
+        pass 
+    def test_if_receive_token_raise_error_with_empty_data(self) -> None:
+        pass
+    
+
+        

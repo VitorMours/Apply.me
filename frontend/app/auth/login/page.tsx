@@ -63,7 +63,7 @@ export default function AuthLoginPage() {
             <CardTitle className="text-2xl text-center">Login</CardTitle>
           </CardHeader>
           <CardContent>
-            <form className="space-y-4" onSubmit={handleSubmit}>
+            <form className="space-y-4" onSubmit={handleSubmit} aria-label="login">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input className="rounded-lg" name="email" id="email" type="email" placeholder="nome@exemplo.com" required />
@@ -79,7 +79,7 @@ export default function AuthLoginPage() {
                 <Input className="rounded-lg" name="password" id="password" type="password" placeholder="password" required />
               </div>
 
-              {loading ? <Spinner className="w-full" /> : <Button type="submit" className="w-full rounded-lg">Entrar</Button>}
+              {loading ? <Spinner className="w-full" /> : <Button type="submit" aria-label="login" className="w-full rounded-lg">Entrar</Button>}
             </form>
           </CardContent>
         </Card>

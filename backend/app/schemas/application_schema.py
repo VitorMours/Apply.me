@@ -7,9 +7,11 @@ class ApplicationSchema(BaseModel):
     company: str
     position: str
     
-    
 class CreateApplicationSchema(ApplicationSchema):
-    pass 
+    created_at: datetime
+    status: str
 
 class UpdateApplicationSchema(ApplicationSchema):
-    pass
+    status: str | None = None
+    updated_at: datetime 
+    

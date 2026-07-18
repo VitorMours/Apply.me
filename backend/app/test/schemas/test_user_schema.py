@@ -176,4 +176,9 @@ class TestUserSchemas:
         assert user_instance.role == ""
         assert user_instance.email == "email@email.com"
             
+            
+class TestUserReadSchemas:
+    pass 
+
+# TODO: Criar o schema relacionado ao mesmo
         

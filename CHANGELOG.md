@@ -1,5 +1,21 @@
 # CHANGELOG
 
+---
+> TODO: Fazer a Configuracao em go do web scraper
+---
+
+
+#### 0.0.5
+- Criando as pastas de servico de llm e de web_scraping
+- Criando o ambiente de desenvolvimento da LLM
+    - Configurando ambiente de Langchain
+    - Configurando ambiente de Langchain-Ollama
+    - Configurando ambiente de Fastapi
+
+
+
+
+
 #### 0.0.4
 - Criando testes de erro para cada um dos schemas
 - Adicionando classes adicionais para organizacao

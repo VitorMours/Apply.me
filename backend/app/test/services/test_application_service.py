@@ -27,7 +27,20 @@ class TestApplicationServiceStructure:
     def test_if_create_application_method_have_correct_parameters(self) -> None:
         module = importlib.import_module("app.services.application_service")
         class_ = module.ApplicationService
-        # TODO: Verificar se assinatura possui parametros corretos
+        signature = inspect.signature(class_.create_application)
+        parameters = list(signature.parameters.keys())
+        assert ["self", "application_data"] == parameters, "A assinatura do metodo de criar aplicação esta incorreto" 
+        
+    def test_if_update_application_method_have_correct_parameters(self) -> None:
+        module = importlib.import_module("app.services.application_service")
+        class_ = module.ApplicationService 
+        signature = inspect.signature(class_.update_application)
+        parameters = list(signature.parameters.keys())
+        assert ["self","application_id","application_new_data"] == parameters, "A assinatura de metodo de atualizacao de aplicacao esta com a assinatura incorreta"
+        
+    def test_if_search_application_method_have_correct_parameters(self) -> None:
+        pass
+    
         
 class TestApplicationServiceFunctions:
     def test_if_is_running(self) -> None:

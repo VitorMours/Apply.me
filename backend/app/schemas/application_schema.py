@@ -8,10 +8,15 @@ class ApplicationSchema(BaseModel):
     position: str
     
 class CreateApplicationSchema(ApplicationSchema):
-    created_at: datetime
     status: str
 
 class UpdateApplicationSchema(ApplicationSchema):
+    name: str | None = None
+    company: str | None = None
+    position: str | None = None
     status: str | None = None
-    updated_at: datetime 
+    created_at: datetime
     
+    
+class ReadApplicationSchema(ApplicationSchema):
+    pass

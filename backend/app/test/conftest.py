@@ -3,6 +3,8 @@ from beanie import init_beanie
 from mongomock_motor import AsyncMongoMockClient
 from app.models.user_model import User
 from app.models.application_model import Application  # Importe o modelo aqui
+from app.schemas.application_schema import CreateApplicationSchema
+from datetime import datetime 
 
 def pytest_configure(config):
     config.addinivalue_line(
@@ -47,3 +49,15 @@ async def mock_user(mock_db):
     ) 
     await instance.save()
     return instance
+
+@pytest_asyncio.fixture(scope="function")
+async def mock_application_by_schema():
+    time = datetime.now()
+    instance = CreateApplicationSchema(
+        name = "Flutter and Java Developer",
+        company  = "Demetryx",
+        position  = "Fullstack Developer",
+        status  = "Entry Level",
+        created_at = time
+    )
+    return instance 

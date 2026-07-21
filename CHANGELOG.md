@@ -4,6 +4,11 @@
 > TODO: Fazer a Configuracao em go do web scraper
 ---
 
+#### 0.0.6
+- Criando o service de LLM dentro do llm_service
+- Criando os testes dos schemas de comunicação do serviço de de llm
+- Criando a estrutura de services, de schemas, api e core dentro do llm service
+- estabelecendo que o webscraper service deve ser feito em golang
 
 #### 0.0.5
 - Criando as pastas de servico de llm e de web_scraping
@@ -11,10 +16,6 @@
     - Configurando ambiente de Langchain
     - Configurando ambiente de Langchain-Ollama
     - Configurando ambiente de Fastapi
-
-
-
-
 
 #### 0.0.4
 - Criando testes de erro para cada um dos schemas

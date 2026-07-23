@@ -4,6 +4,11 @@
 > TODO: Fazer a Configuracao em go do web scraper
 ---
 
+#### 0.0.7
+- Criando a integração entre o Ollama e o langchain
+- Criando classe de erros dentro da classe de test_schema_errors
+- Estabelecendo serviço e metodos do LLM
+
 #### 0.0.6
 - Criando o service de LLM dentro do llm_service
 - Criando os testes dos schemas de comunicação do serviço de de llm

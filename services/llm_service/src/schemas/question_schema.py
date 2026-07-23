@@ -1,5 +1,5 @@
 from pydantic import BaseModel
 
 class QuestionSchema(BaseModel):
-    question: str 
+    message: str
     multiple_choice: bool

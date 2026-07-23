@@ -1,7 +1,7 @@
 from langchain_core.messages import SystemMessage, AIMessage, HumanMessage
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parses import StrOutputParser
-from services.llm_service.src.core.llm_client import get_ollama_client
+from langchain_core.output_parsers import StrOutputParser
+from src.core.llm_client import get_ollama_client
 from langchain_ollama import ChatOllama
 
 class LLMService:
@@ -16,16 +16,16 @@ class LLMService:
                 objetificando aumentar ao máximo as chances dele ser chamado para a entrevista de emprego, e ser assim contratado, de forma a deslumbrar o recrutador com 
                 o currículo do nosso usuário.
             """),
-            HumanMessage("{input}")
+            ("human", "{input}"),
         ])
 
-        self.chain = self._llm | self.prompt | StrOutputParser()
+        self.chain =  self.prompt | self._llm | StrOutputParser()
 
     async def generate(self, message: str) -> str:
         return await self.chain.ainvoke({"input":message})
 
     async def stream(self, message:str) -> str:
-        async for chunk in self.chain.astream({"input": message})
+        async for chunk in self.chain.astream({"input": message}):
             yield chunk
 
 

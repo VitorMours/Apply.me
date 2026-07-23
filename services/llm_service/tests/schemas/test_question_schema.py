@@ -1,7 +1,8 @@
 import pytest
 import importlib
 import inspect 
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
+
 
 class TestQuestionSchema:
     def test_if_can_run(self) -> None:
@@ -19,7 +20,7 @@ class TestQuestionSchema:
         module = importlib.import_module("src.schemas.question_schema")
         class_ = module.QuestionSchema
         fields = class_.model_fields
-        assert "question" in fields, "O campo de question precisa estar no schema"
+        assert "message" in fields, "O campo de question precisa estar no schema"
         assert "multiple_choice" in fields, "O campo de multiple_choices precisa estar no schema"
 
     
@@ -27,11 +28,11 @@ class TestQuestionSchema:
         module = importlib.import_module("src.schemas.question_schema")
         class_ = module.QuestionSchema 
         instance = class_(
-            question = "Pergunta do sistema de forma a serializar",
+            message = "Pergunta do sistema de forma a serializar",
             multiple_choice = False 
         ) 
         assert instance.multiple_choice == False, ""
-        assert instance.question == "Pergunta do sistema de forma a serializar", ""
+        assert instance.message == "Pergunta do sistema de forma a serializar", ""
 
 class TestQuestionSchemaErrors:
     def test_if_is_running(self) -> None:
@@ -47,19 +48,35 @@ class TestQuestionSchemaErrors:
         except ImportError:
             pytest.fail("Was not possible to import the question schema module")
 
-
     def test_if_question_schema_can_raise_errors_with_incorrect_data_in_multiple_choice_fields(self) -> None:
         module = importlib.import_module("src.schemas.question_schema")
         class_ = module.QuestionSchema 
         incorrect_data = ["asd",123, 123.45, None, ""]
 
-        # TODO: Corrijir
-        #for data in incorrect_data:
-        #    with pytest.raises(ValidationError, NameError):
-        #        instance = class_(
-        #            question="Question",
-        #            multiple_choice=data
-        #        )
+        for data in incorrect_data:
+            with pytest.raises(ValidationError):
+                instance = class_(
+                    message="Question",
+                    multiple_choice=data
+                )
+        
+        
+    def test_if_question_schema_can_raise_errors_with_incorrect_data_in_message_field(self) -> None:
+        module = importlib.import_module("src.schemas.question_schema")
+        class_ = module.QuestionSchema
+        incorrect_data = [True, 123, 123.45, None]
+        for data in incorrect_data:
+            with pytest.raises(ValidationError):
+                instance = class_(
+                    message=data,
+                    multiple_choice=False
+                )
+                
+                
+                
+                
+                
+        
 
 
 

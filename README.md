@@ -3,7 +3,7 @@
 <p  align="center">
   <a href="https://go-skill-icons.vercel.app/">
     <img
-      src="https://go-skill-icons.vercel.app/api/icons?i=css,tailwindcss,typescript,nextjs,jest,shadcn,python,fastapi,pydantic,pytest,sqlalchemy,langchain,ollama,docker,mongodb,githubactions,grafana,opentelemetry&theme=dark&perline=6"
+      src="https://go-skill-icons.vercel.app/api/icons?i=tailwindcss,typescript,nextjs,jest,shadcn,jwt,python,fastapi,pydantic,pytest,sqlalchemy,langchain,ollama,neo4j,mongodb,docker,githubactions,opentelemetry&theme=dark&perline=6"
     />
   </a>
 </p>

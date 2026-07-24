@@ -1,8 +1,9 @@
 # CHANGELOG
 
----
-> TODO: Fazer a Configuracao em go do web scraper
----
+#### 0.0.8
+- Continuidade do banco de dados em mongodb
+- Migração do core para usar java com spring boot
+- microsserviços em fastapi e flask se necessario
 
 #### 0.0.7
 - Criando a integração entre o Ollama e o langchain

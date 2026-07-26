@@ -50,8 +50,29 @@ class UserProfileTests {
         }
     }
 
-    // TODO
-    // deveVerificarSeCriaComOsCamposCorretamente
+    @Test 
+    void deveVerificarSeConsegueCriarComOsCamposCorretamente() {
+        UserProfile profile = new UserProfile(
+            "Vitor",
+            "Moura",
+            "vitor.moura@gmail.com"
+        );
+        assertThat(profile.getFirstName()).isEqualTo("Vitor");
+        assertThat(profile.getLastName()).isEqualTo("Moura");
+        assertThat(profile.getEmail()).isEqualTo("vitor.moura@gmail.com");
+    }
+
+
+    @Test 
+    void deveLancarErroAoTentarSalvarComOsCamposVazios() {
+        UserProfile profile = new UserProfile(
+            "",
+            "",
+            ""
+        );
+        assertThatThrownBy(() -> mongoTemplate.save(profile)).isInstanceOf(ConstraintViolationException.class);
+    }
+
     // deveLancarErroAoTentarSalvarSemOsCampos
     // DeveLancarErroAoFaltarUmDosCamposNaCriacao
     // DeveLancarErroAoTipoDosCamposSerErrado

@@ -44,7 +44,7 @@ public class UserProfile implements Serializable {
      * @param lastName
      * @param email
      */
-    public UserProfile(String firstName, String lastName, String email, String password) {
+    public UserProfile(String firstName, String lastName, String email) {
         this.id = UUID.randomUUID().toString();
         this.firstName = firstName;
         this.lastName = lastName;

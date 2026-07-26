@@ -31,7 +31,7 @@ class UserProfileRepositoryTest {
 
     @Test
     void shouldFindUserByEmailWhenExists() {
-        var profile = new UserProfile( "Vitor", "null", "vitor@aplly.dev", "hashed-senha");
+        var profile = new UserProfile( "Vitor", "null", "vitor@aplly.dev");
         repository.save(profile);
 
         Optional<UserProfile> found = repository.findByEmail("vitor@aplly.dev");
@@ -49,7 +49,7 @@ class UserProfileRepositoryTest {
 
     @Test
     void shouldReturnTrueWhenEmailExists() {
-        repository.save(new UserProfile( "hashed-senha", "Vitor", "vitor@aplly.dev", "null"));
+        repository.save(new UserProfile("Vitor","Moura", "vitor@aplly.dev"));
 
         assertThat(repository.existsByEmail("vitor@aplly.dev")).isTrue();
     }

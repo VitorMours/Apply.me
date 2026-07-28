@@ -36,7 +36,7 @@ public class UserProfile implements Serializable {
      * Construtor exigido pelo SpringData para reidratação da entidade a partir 
      * do banco de dados via reflection
      */
-    protected UserProfile() {}
+    public UserProfile() {}
 
     /**
      * Construtor para a entidade do banco de dados com os parâmetros

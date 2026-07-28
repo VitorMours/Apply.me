@@ -1,7 +1,5 @@
 package com.applyme.backend.users.internal;
 
-import java.util.ArrayList;
-import java.lang.reflect.Field;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -19,9 +17,9 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.mongodb.MongoDBContainer;
 import org.testcontainers.utility.DockerImageName;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import jakarta.validation.Validation;
+import jakarta.validation.ConstraintViolationException;
 
 @DataMongoTest
 @Testcontainers
@@ -62,7 +60,6 @@ class UserProfileTests {
         assertThat(profile.getEmail()).isEqualTo("vitor.moura@gmail.com");
     }
 
-
     @Test 
     void deveLancarErroAoTentarSalvarComOsCamposVazios() {
         UserProfile profile = new UserProfile(
@@ -73,10 +70,53 @@ class UserProfileTests {
         assertThatThrownBy(() -> mongoTemplate.save(profile)).isInstanceOf(ConstraintViolationException.class);
     }
 
-    // deveLancarErroAoTentarSalvarSemOsCampos
-    // DeveLancarErroAoFaltarUmDosCamposNaCriacao
-    // DeveLancarErroAoTipoDosCamposSerErrado
+    @Test 
+    void deveLancarErroAoTentarSalvarComOsCamposErrados() {
+        UserProfile profile1 = new UserProfile(
+            "Vitor",
+            "Moura",
+            "123"
+        );
+        assertThatThrownBy(() -> mongoTemplate.save(profile1)).isInstanceOf(ConstraintViolationException.class);
+ 
+        UserProfile profile2 = new UserProfile(
+            null,
+            "Moura",
+            "vitor.moura@gmail.com"
+        );
+        assertThatThrownBy(() -> mongoTemplate.save(profile2)).isInstanceOf(ConstraintViolationException.class);
+ 
+        UserProfile profile3 = new UserProfile(
+            "Vitor",
+            null,
+            "vitor.moura@gmail.com"
+        );
+        assertThatThrownBy(() -> mongoTemplate.save(profile3)).isInstanceOf(ConstraintViolationException.class);
+ 
+        UserProfile profile4 = new UserProfile(
+            "Vitor",
+            "Moura",
+            null
+        );
+        assertThatThrownBy(() -> mongoTemplate.save(profile4)).isInstanceOf(ConstraintViolationException.class);
+    }
 
+    @Test 
+    void deveLancarErroAoPossuirInformacoesDuplicados() {
+        UserProfile profile1 = new UserProfile(
+            "Vitor",
+            "Moura",
+            "teste.teste@email.com"
+        );
+ 
+        mongoTemplate.save(profile1);
+        UserProfile profile2 = new UserProfile(
+            "Vitor",
+            "Moura",
+            "teste.teste@email.com"
+        );
+        assertThatThrownBy(() -> mongoTemplate.save(profile2)).isInstanceOf(DuplicateKeyException.class);
+    }
 
     @TestConfiguration
     static class ValidationConfig {

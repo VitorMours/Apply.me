@@ -31,6 +31,8 @@ public class UserProfile implements Serializable {
     @Email(message="Email não válido")
     @Indexed(unique=true)
     private String email;
+
+    private boolean active = true;
     
     /**
      * Construtor exigido pelo SpringData para reidratação da entidade a partir 
@@ -62,6 +64,14 @@ public class UserProfile implements Serializable {
         }
     public String getEmail() {
         return email;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public void setFirstName(String firstName) {

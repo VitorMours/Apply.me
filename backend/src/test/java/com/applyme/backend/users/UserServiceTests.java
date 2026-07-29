@@ -61,8 +61,6 @@ public class UserServiceTests {
         assertThat(profileSearched).contains(profile.getId());
     }
 
-
-    // TODO: Terminar o teste
     @Test 
     @DisplayName("Consegue buscar o usuario pelo Id dele")
     void consegueBuscarOUsuarioPeloIdDele() {
@@ -72,7 +70,44 @@ public class UserServiceTests {
             "lucas.moura@gmail.com"
         );
 
+        when(repository.existsById(profile.getId())).thenReturn(false);
+        when(repository.save(any(UserProfile.class))).thenReturn(profile);
+        when(repository.findById(profile.getId())).thenReturn(Optional.of(profile));
 
+        service.createProfile(profile);
+        Optional<String> profileSearched = service.getProfileById(profile.getId());
+        assertThat(profileSearched).contains(profile.getEmail());
     }
+
+    // TODO: 
+
+
+
+    // void consegueAtualizarUsuarioExistente
+    // void retornaErroAtualizarUsuarioInexistente
+    // void retornaErroAtualizarUsuarioSenhaOuEmailErrado
+    // void softDeleteNoUsuario 
+    
+    @Test
+    @DisplayName("Faz soft delete do usuario para nao deletar registro")
+    void softDeleteDoUsuario() {
+        UserProfile profile = new UserProfile(
+            "Lucas",
+            "Moura",
+            "lucas.moura@gmail.com"
+        );
+
+        when(repository.findById(profile.getId())).thenReturn(Optional.of(profile));
+        when(repository.save(any(UserProfile.class))).thenReturn(profile);
+
+        service.deleteProfile(profile.getId());
+
+        verify(repository, never()).delete(any(UserProfile.class));
+        verify(repository).save(profile);
+        assertThat(profile.isActive()).isFalse();
+    }
+
+    // void levantaErroTentandoDeletarUsuarioInexistente
+
 
 }

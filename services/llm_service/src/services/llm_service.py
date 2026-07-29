@@ -10,7 +10,7 @@ class LLMService:
        
         self.prompt = ChatPromptTemplate.from_messages([
             SystemMessage("""
-                Você é um criado de curriculo, sua função, é entender que tipo de profissional o usuário é, e a partir disso criar o perfil dele de forma
+                Você é um criador de curriculo, sua função, é entender que tipo de profissional o usuário é, e a partir disso criar o perfil dele de forma
                 que posteriormente, na etapa de criação dos currículos personalizados, vamos ter as opções de ferramentas e capacidades do nosso usuário, para que 
                 possamos assim escolher cada uma das capacidades e das habilidades do usuário, que são mais adequadas a cada uma das vagas as quais eles deseja aplicar,
                 objetificando aumentar ao máximo as chances dele ser chamado para a entrevista de emprego, e ser assim contratado, de forma a deslumbrar o recrutador com 

@@ -2,6 +2,7 @@ package com.applyme.backend.auth;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Field;
 
@@ -17,13 +18,13 @@ public class AuthServiceTests {
     private PasswordEncoder passwordEncoder;
     private CredentialRepository repository;
     private ApplicationEventPublisher publisher;
-
+    private AuthService service;
     @BeforeEach 
     void setUp() {
         repository = mock(CredentialRepository.class);
         passwordEncoder = mock(PasswordEncoder.class);
         publisher = mock(ApplicationEventPublisher.class);
-        AuthService service = new AuthService(repository, passwordEncoder, publisher);
+        service = new AuthService(repository, passwordEncoder, publisher);
     }
 
     @Test 
@@ -36,13 +37,18 @@ public class AuthServiceTests {
         }
     }
 
+    @Test 
+    @DisplayName("Verifica se o register funciona corretamente")
+    void verificaSeORegisterFuncionaCorretamente() {
+        when(repository.existsByEmail("teste.teste@gmail.com")).thenReturn(false);
+        when(passwordEncoder.encode("password")).thenReturn("hash-password");
+        String userId = service.register("teste.teste@gmail.com","password");
+        assertThat(userId).isNotNull();
+    }
 
-    // TODO:
-    // void verificaSeOEventoEstaSendoPublicado
-    // void verificaSeOEventoEstaSendoConstruidoCorretamente
+    // void verificaSeOMetodoRegisterFuncionaCorretamente
     // void verificaSePossuiOMetodoDeLogin
     // void verificaSePossuiOMetodoDeAuthenticate
-    // void verificaSePossuiOMetodoDeRegister
     //
     //
     //

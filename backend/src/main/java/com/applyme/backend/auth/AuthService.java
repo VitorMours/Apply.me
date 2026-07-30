@@ -22,7 +22,10 @@ public class AuthService {
         this.publisher = publisher;
     }
 
-    public void register() {}
+    public String register(String email, String password) {
+
+        return "";
+    }
     public void login() {}
     public void authenticate() {}
 

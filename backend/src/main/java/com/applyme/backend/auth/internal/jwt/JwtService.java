@@ -5,7 +5,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -63,5 +62,9 @@ public class JwtService {
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public long getExpirationSeconds() {
+        return expirationMs / 1000;
     }
 }

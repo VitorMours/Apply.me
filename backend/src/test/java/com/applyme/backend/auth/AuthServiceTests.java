@@ -11,7 +11,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.applyme.backend.auth.internal.Credential;
 import com.applyme.backend.auth.internal.CredentialRepository;
+import com.applyme.backend.auth.internal.dto.AuthResponse;
+import com.applyme.backend.auth.internal.jwt.JwtService;
 
 public class AuthServiceTests {
     
@@ -19,12 +23,16 @@ public class AuthServiceTests {
     private CredentialRepository repository;
     private ApplicationEventPublisher publisher;
     private AuthService service;
+    private JwtService jwtService;
+    
     @BeforeEach 
     void setUp() {
         repository = mock(CredentialRepository.class);
         passwordEncoder = mock(PasswordEncoder.class);
         publisher = mock(ApplicationEventPublisher.class);
-        service = new AuthService(repository, passwordEncoder, publisher);
+        jwtService = mock(JwtService.class);
+
+        service = new AuthService(repository, passwordEncoder, publisher, jwtService);
     }
 
     @Test 
@@ -37,16 +45,16 @@ public class AuthServiceTests {
         }
     }
 
-    @Test 
+    @Test
     @DisplayName("Verifica se o register funciona corretamente")
     void verificaSeORegisterFuncionaCorretamente() {
         when(repository.existsByEmail("teste.teste@gmail.com")).thenReturn(false);
         when(passwordEncoder.encode("password")).thenReturn("hash-password");
-        String userId = service.register("teste.teste@gmail.com","password");
+        AuthResponse userId = service.register("Vitor","Moura","teste.teste@gmail.com","password");
         assertThat(userId).isNotNull();
     }
 
-    // void verificaSeOMetodoRegisterFuncionaCorretamente
+        // void verificaSeOMetodoRegisterFuncionaCorretamente
     // void verificaSePossuiOMetodoDeLogin
     // void verificaSePossuiOMetodoDeAuthenticate
     //

@@ -1,7 +1,6 @@
 package com.applyme.backend.users.internal;
 
 import java.util.UUID;
-import java.io.Serializable;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,7 +15,7 @@ import jakarta.validation.constraints.NotBlank;
  * @since 0.0.1 - 25/07/2026
  */
 @Document(collection="users")
-public class UserProfile implements Serializable {
+public class UserProfile {
 
     @Id 
     private String id;

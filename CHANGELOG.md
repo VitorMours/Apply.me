@@ -1,5 +1,10 @@
 # CHANGELOG
 
+#### 0.1.0
+- Definição da Stack por meio do diagrama do excalidraw
+- Criado backend funcional com o mongo atlas
+- Criação da pagina de chat por meio do shadcn com tailwindcss
+
 #### 0.0.8
 - Continuidade do banco de dados em mongodb
 - Migração do core para usar java com spring boot

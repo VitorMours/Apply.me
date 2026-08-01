@@ -16,7 +16,7 @@ export interface LoginUserDTO {
 
 class AuthService {
     async signin(data: CreateUserDTO) { // TODO: Adicionar o retorno
-        return apiFetch("v1/auth/signin",
+        return apiFetch("/auth/register",
             {
                 body: JSON.stringify(data),
                 method: "POST"
@@ -24,7 +24,7 @@ class AuthService {
     }
 
     async login(data: LoginUserDTO): Promise<void> { // TODO: Adicionar o retorno
-        const response = await apiFetch("v1/auth/login", {
+        const response = await apiFetch("/auth/login", {
             body: JSON.stringify(data),
             method: "POST"
         });

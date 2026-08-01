@@ -1,44 +1,64 @@
-package com.applyme.backend.auth;
+    package com.applyme.backend.auth;
 
-import org.springframework.stereotype.Service;
-import com.applyme.backend.auth.internal.Credential;
-import com.applyme.backend.auth.internal.CredentialRepository;
-import com.applyme.backend.auth.internal.dto.AuthResponse;
-import com.applyme.backend.auth.internal.jwt.JwtService;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.crypto.password.PasswordEncoder;
+    import org.springframework.stereotype.Service;
+    import org.springframework.transaction.annotation.Transactional;
 
-@Service
-public class AuthService {
+    import com.applyme.backend.auth.internal.Credential;
+    import com.applyme.backend.auth.internal.CredentialRepository;
+    import com.applyme.backend.auth.internal.dto.AuthResponse;
+    import com.applyme.backend.auth.internal.jwt.JwtService;
+    import org.springframework.context.ApplicationEventPublisher;
+    import org.springframework.security.crypto.password.PasswordEncoder;
 
-    private final PasswordEncoder passwordEncoder;
-    private final CredentialRepository repository;
-    private final ApplicationEventPublisher publisher;
-    private final JwtService jwtService;
+    @Service
+    public class AuthService {
 
-    public AuthService(CredentialRepository repository, PasswordEncoder passwordEncoder, ApplicationEventPublisher publisher, JwtService jwtService){
-        this.repository = repository;
-        this.passwordEncoder = passwordEncoder;
-        this.publisher = publisher;
-        this.jwtService = jwtService;
-    }
+        private final PasswordEncoder passwordEncoder;
+        private final CredentialRepository repository;
+        private final ApplicationEventPublisher publisher;
+        private final JwtService jwtService;
 
-    public AuthResponse register(String firstName, String lastName, String email, String password) {
-        if(repository.existsByEmail(email)) {
-            throw new IllegalArgumentException("Usuário já cadastrado");
+        public AuthService(CredentialRepository repository, PasswordEncoder passwordEncoder, ApplicationEventPublisher publisher, JwtService jwtService){
+            this.repository = repository;
+            this.passwordEncoder = passwordEncoder;
+            this.publisher = publisher;
+            this.jwtService = jwtService;
         }
-        String passwordHash = passwordEncoder.encode(password);
-        Credential credential = new Credential(email, passwordHash);
 
-        repository.save(credential);
-        publisher.publishEvent(new UserRegisteredEvent(credential.getId(), firstName, lastName, email));
-        
-        String token = jwtService.generateToken(credential.getId(), email);
-        AuthResponse.UserSummary userSummary = new AuthResponse.UserSummary(
-                credential.getId(), firstName + " " + lastName, email);        
-        return AuthResponse.of(token, jwtService.getExpirationSeconds(), userSummary);    }
+        @Transactional
+        public AuthResponse register(String firstName, String lastName, String email, String password) {
+            if(repository.existsByEmail(email)) {
+                throw new IllegalArgumentException("Usuário já cadastrado");
+            }
+            String passwordHash = passwordEncoder.encode(password);
+            Credential credential = new Credential(email, passwordHash);
 
-    public void login() {}
-    public void authenticate() {}
+            repository.save(credential);
+            publisher.publishEvent(new UserRegisteredEvent(credential.getId(), firstName, lastName, email));
+            
+            String token = jwtService.generateToken(credential.getId(), email);
+            AuthResponse.UserSummary userSummary = new AuthResponse.UserSummary(
+                    credential.getId(), firstName + " " + lastName, email);        
+            return AuthResponse.of(token, jwtService.getExpirationSeconds(), userSummary);    
+        }
 
-}
+        @Transactional
+        public AuthResponse login(String email, String password) {
+            Credential credential = repository.findByEmail(email)
+                    .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+
+            if (!passwordEncoder.matches(password, credential.getPasswordHash())) {
+                throw new IllegalArgumentException("Senha incorreta");
+            }
+
+            String token = jwtService.generateToken(credential.getId(), email);
+            AuthResponse.UserSummary userSummary = new AuthResponse.UserSummary(
+                    credential.getId(), 
+                    "", 
+                    email
+            );
+            return AuthResponse.of(token, jwtService.getExpirationSeconds(), userSummary);
+        }
+        public void authenticate() {}
+
+    }

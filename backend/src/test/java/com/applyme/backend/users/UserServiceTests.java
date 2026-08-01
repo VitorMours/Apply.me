@@ -57,8 +57,8 @@ public class UserServiceTests {
         when(repository.findByEmail("lucas.moura@gmail.com")).thenReturn(Optional.of(profile));
 
         service.createProfile(profile);
-        Optional<String> profileSearched = service.getProfileByEmail(profile.getEmail());
-        assertThat(profileSearched).contains(profile.getId());
+        Optional<UserProfile> profileSearched = service.getProfileByEmail(profile.getEmail());
+        assertThat(profileSearched).contains(profile);
     }
 
     @Test 
@@ -75,8 +75,8 @@ public class UserServiceTests {
         when(repository.findById(profile.getId())).thenReturn(Optional.of(profile));
 
         service.createProfile(profile);
-        Optional<String> profileSearched = service.getProfileById(profile.getId());
-        assertThat(profileSearched).contains(profile.getEmail());
+        Optional<UserProfile> profileSearched = service.getProfileById(profile.getId());
+        assertThat(profileSearched).contains(profile);
     }
 
     // TODO: 

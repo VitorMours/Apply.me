@@ -5,6 +5,7 @@ from src.schemas.question_schema import QuestionSchema
 from src.services import llm_service
 from src.services.llm_service import LLMService
 from src.services.chat_history_service import ChatService
+
 router = APIRouter(prefix="/chat", tags=["chat"])
 
 def get_ollama_service(client=Depends(get_ollama_client)) -> LLMService:

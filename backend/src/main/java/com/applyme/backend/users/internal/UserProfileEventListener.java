@@ -1,6 +1,7 @@
 package com.applyme.backend.users.internal;
 
 import org.springframework.stereotype.Component;
+import org.springframework.context.event.EventListener;
 import org.springframework.modulith.events.ApplicationModuleListener;
 
 import com.applyme.backend.auth.UserRegisteredEvent;
@@ -11,12 +12,12 @@ public class UserProfileEventListener {
 
     private final UserService profileService;
 
-    UserProfileEventListener(UserService service) {
+    public UserProfileEventListener(UserService service) {
         this.profileService = service;
     }
 
     @ApplicationModuleListener 
-    void on(UserRegisteredEvent event) {
+    public void on(UserRegisteredEvent event) {
         profileService.createProfile(new UserProfile(event.firstName(), event.lastName(), event.email()));
     }
 }

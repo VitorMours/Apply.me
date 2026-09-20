@@ -2,7 +2,6 @@ from functools import lru_cache
 from langchain_ollama import ChatOllama 
 from src.core.config import settings
 
-
 @lru_cache
 def get_ollama_client() -> ChatOllama:
     return ChatOllama(

@@ -1,7 +1,6 @@
 package com.applyme.backend.users.internal;
 
 import java.util.UUID;
-import java.io.Serializable;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,7 +15,7 @@ import jakarta.validation.constraints.NotBlank;
  * @since 0.0.1 - 25/07/2026
  */
 @Document(collection="users")
-public class UserProfile implements Serializable {
+public class UserProfile {
 
     @Id 
     private String id;
@@ -31,6 +30,8 @@ public class UserProfile implements Serializable {
     @Email(message="Email não válido")
     @Indexed(unique=true)
     private String email;
+
+    private boolean active = true;
     
     /**
      * Construtor exigido pelo SpringData para reidratação da entidade a partir 
@@ -62,6 +63,14 @@ public class UserProfile implements Serializable {
         }
     public String getEmail() {
         return email;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public void setFirstName(String firstName) {

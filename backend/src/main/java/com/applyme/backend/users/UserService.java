@@ -21,14 +21,23 @@ public class UserService {
         repository.save(profile);
     }
 
-    public Optional<String> getProfileByEmail(String email) {
-        Optional<UserProfile> profileSearched = repository.findByEmail(email);
-        if (profileSearched.isPresent()){
-            return Optional.of(profileSearched.get().getId());
-        }
-        return Optional.empty();
+    public Optional<UserProfile> getProfileByEmail(String email) {
+        return repository.findByEmail(email);
     }
     
-    
-    // public void getProfileById(){}
+    public Optional<UserProfile> getProfileById(String id){
+        return repository.findById(id);
+    }
+
+    public boolean deleteProfile(String id) {
+        Optional<UserProfile> profileSearched = repository.findById(id);
+        if (profileSearched.isEmpty()) {
+            System.out.println("Problema ao encontrar o usuario");
+        }
+
+        UserProfile profile = profileSearched.get();
+        profile.setActive(false);
+        repository.save(profile);
+        return true;
+    }
 }
